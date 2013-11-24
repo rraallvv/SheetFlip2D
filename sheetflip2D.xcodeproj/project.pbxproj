@@ -7,8 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E4F36238183E8BD400519446 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4F36237183E8BD400519446 /* main.cpp */; };
-		E4F3623A183E8BD400519446 /* sheetflip2D.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = E4F36239183E8BD400519446 /* sheetflip2D.1 */; };
+		E415B3EB183EA28900219C05 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E415B3EA183EA28900219C05 /* OpenGL.framework */; };
+		E415B3ED183EA2A700219C05 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E415B3EC183EA2A700219C05 /* GLUT.framework */; };
+		E4F3625E183E8C5500519446 /* adaptive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4F36241183E8C5500519446 /* adaptive.cpp */; };
+		E4F3625F183E8C5500519446 /* corrector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4F36244183E8C5500519446 /* corrector.cpp */; };
+		E4F36260183E8C5500519446 /* flip2d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4F36246183E8C5500519446 /* flip2d.cpp */; };
+		E4F36261183E8C5500519446 /* implicit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4F36248183E8C5500519446 /* implicit.cpp */; };
+		E4F36262183E8C5500519446 /* kernel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4F3624A183E8C5500519446 /* kernel.cpp */; };
+		E4F36263183E8C5500519446 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4F3624C183E8C5500519446 /* main.cpp */; };
+		E4F36265183E8C5500519446 /* mapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4F3624E183E8C5500519446 /* mapper.cpp */; };
+		E4F36266183E8C5500519446 /* OBB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4F36250183E8C5500519446 /* OBB.cpp */; };
+		E4F36267183E8C5500519446 /* sheet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4F36252183E8C5500519446 /* sheet.cpp */; };
+		E4F36268183E8C5500519446 /* solver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4F36254183E8C5500519446 /* solver.cpp */; };
+		E4F36269183E8C5500519446 /* sorter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4F36256183E8C5500519446 /* sorter.cpp */; };
+		E4F3626A183E8C5500519446 /* tension.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4F36258183E8C5500519446 /* tension.cpp */; };
+		E4F3626B183E8C5500519446 /* utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4F3625A183E8C5500519446 /* utility.cpp */; };
+		E4F3626C183E8C5500519446 /* write_bmp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4F3625C183E8C5500519446 /* write_bmp.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -18,16 +32,43 @@
 			dstPath = /usr/share/man/man1/;
 			dstSubfolderSpec = 0;
 			files = (
-				E4F3623A183E8BD400519446 /* sheetflip2D.1 in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E415B3EA183EA28900219C05 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		E415B3EC183EA2A700219C05 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		E4F36234183E8BD400519446 /* sheetflip2D */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = sheetflip2D; sourceTree = BUILT_PRODUCTS_DIR; };
-		E4F36237183E8BD400519446 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		E4F36239183E8BD400519446 /* sheetflip2D.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = sheetflip2D.1; sourceTree = "<group>"; };
+		E4F36241183E8C5500519446 /* adaptive.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = adaptive.cpp; sourceTree = "<group>"; };
+		E4F36242183E8C5500519446 /* adaptive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = adaptive.h; sourceTree = "<group>"; };
+		E4F36243183E8C5500519446 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		E4F36244183E8C5500519446 /* corrector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = corrector.cpp; sourceTree = "<group>"; };
+		E4F36245183E8C5500519446 /* corrector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = corrector.h; sourceTree = "<group>"; };
+		E4F36246183E8C5500519446 /* flip2d.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = flip2d.cpp; sourceTree = "<group>"; };
+		E4F36247183E8C5500519446 /* flip2d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = flip2d.h; sourceTree = "<group>"; };
+		E4F36248183E8C5500519446 /* implicit.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = implicit.cpp; sourceTree = "<group>"; };
+		E4F36249183E8C5500519446 /* implicit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = implicit.h; sourceTree = "<group>"; };
+		E4F3624A183E8C5500519446 /* kernel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kernel.cpp; sourceTree = "<group>"; };
+		E4F3624B183E8C5500519446 /* kernel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kernel.h; sourceTree = "<group>"; };
+		E4F3624C183E8C5500519446 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		E4F3624E183E8C5500519446 /* mapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mapper.cpp; sourceTree = "<group>"; };
+		E4F3624F183E8C5500519446 /* mapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mapper.h; sourceTree = "<group>"; };
+		E4F36250183E8C5500519446 /* OBB.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OBB.cpp; sourceTree = "<group>"; };
+		E4F36251183E8C5500519446 /* OBB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBB.h; sourceTree = "<group>"; };
+		E4F36252183E8C5500519446 /* sheet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sheet.cpp; sourceTree = "<group>"; };
+		E4F36253183E8C5500519446 /* sheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sheet.h; sourceTree = "<group>"; };
+		E4F36254183E8C5500519446 /* solver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = solver.cpp; sourceTree = "<group>"; };
+		E4F36255183E8C5500519446 /* solver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = solver.h; sourceTree = "<group>"; };
+		E4F36256183E8C5500519446 /* sorter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sorter.cpp; sourceTree = "<group>"; };
+		E4F36257183E8C5500519446 /* sorter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sorter.h; sourceTree = "<group>"; };
+		E4F36258183E8C5500519446 /* tension.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tension.cpp; sourceTree = "<group>"; };
+		E4F36259183E8C5500519446 /* tension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tension.h; sourceTree = "<group>"; };
+		E4F3625A183E8C5500519446 /* utility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = utility.cpp; sourceTree = "<group>"; };
+		E4F3625B183E8C5500519446 /* utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utility.h; sourceTree = "<group>"; };
+		E4F3625C183E8C5500519446 /* write_bmp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = write_bmp.cpp; sourceTree = "<group>"; };
+		E4F3625D183E8C5500519446 /* write_bmp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = write_bmp.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,17 +76,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E415B3EB183EA28900219C05 /* OpenGL.framework in Frameworks */,
+				E415B3ED183EA2A700219C05 /* GLUT.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E415B3EE183EA31300219C05 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				E415B3EA183EA28900219C05 /* OpenGL.framework */,
+				E415B3EC183EA2A700219C05 /* GLUT.framework */,
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
 		E4F3622B183E8BD400519446 = {
 			isa = PBXGroup;
 			children = (
-				E4F36236183E8BD400519446 /* sheetflip2D */,
+				E4F36240183E8C5500519446 /* src */,
 				E4F36235183E8BD400519446 /* Products */,
+				E415B3EE183EA31300219C05 /* Libraries */,
 			);
 			sourceTree = "<group>";
 		};
@@ -57,13 +110,40 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		E4F36236183E8BD400519446 /* sheetflip2D */ = {
+		E4F36240183E8C5500519446 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				E4F36237183E8BD400519446 /* main.cpp */,
-				E4F36239183E8BD400519446 /* sheetflip2D.1 */,
+				E4F36241183E8C5500519446 /* adaptive.cpp */,
+				E4F36242183E8C5500519446 /* adaptive.h */,
+				E4F36243183E8C5500519446 /* common.h */,
+				E4F36244183E8C5500519446 /* corrector.cpp */,
+				E4F36245183E8C5500519446 /* corrector.h */,
+				E4F36246183E8C5500519446 /* flip2d.cpp */,
+				E4F36247183E8C5500519446 /* flip2d.h */,
+				E4F36248183E8C5500519446 /* implicit.cpp */,
+				E4F36249183E8C5500519446 /* implicit.h */,
+				E4F3624A183E8C5500519446 /* kernel.cpp */,
+				E4F3624B183E8C5500519446 /* kernel.h */,
+				E4F3624C183E8C5500519446 /* main.cpp */,
+				E4F3624E183E8C5500519446 /* mapper.cpp */,
+				E4F3624F183E8C5500519446 /* mapper.h */,
+				E4F36250183E8C5500519446 /* OBB.cpp */,
+				E4F36251183E8C5500519446 /* OBB.h */,
+				E4F36252183E8C5500519446 /* sheet.cpp */,
+				E4F36253183E8C5500519446 /* sheet.h */,
+				E4F36254183E8C5500519446 /* solver.cpp */,
+				E4F36255183E8C5500519446 /* solver.h */,
+				E4F36256183E8C5500519446 /* sorter.cpp */,
+				E4F36257183E8C5500519446 /* sorter.h */,
+				E4F36258183E8C5500519446 /* tension.cpp */,
+				E4F36259183E8C5500519446 /* tension.h */,
+				E4F3625A183E8C5500519446 /* utility.cpp */,
+				E4F3625B183E8C5500519446 /* utility.h */,
+				E4F3625C183E8C5500519446 /* write_bmp.cpp */,
+				E4F3625D183E8C5500519446 /* write_bmp.h */,
 			);
-			path = sheetflip2D;
+			name = src;
+			path = sheetflip2D/src;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -117,7 +197,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E4F36238183E8BD400519446 /* main.cpp in Sources */,
+				E4F36266183E8C5500519446 /* OBB.cpp in Sources */,
+				E4F36265183E8C5500519446 /* mapper.cpp in Sources */,
+				E4F3626C183E8C5500519446 /* write_bmp.cpp in Sources */,
+				E4F36269183E8C5500519446 /* sorter.cpp in Sources */,
+				E4F36261183E8C5500519446 /* implicit.cpp in Sources */,
+				E4F36262183E8C5500519446 /* kernel.cpp in Sources */,
+				E4F36263183E8C5500519446 /* main.cpp in Sources */,
+				E4F36267183E8C5500519446 /* sheet.cpp in Sources */,
+				E4F3625E183E8C5500519446 /* adaptive.cpp in Sources */,
+				E4F36268183E8C5500519446 /* solver.cpp in Sources */,
+				E4F3625F183E8C5500519446 /* corrector.cpp in Sources */,
+				E4F3626B183E8C5500519446 /* utility.cpp in Sources */,
+				E4F3626A183E8C5500519446 /* tension.cpp in Sources */,
+				E4F36260183E8C5500519446 /* flip2d.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -129,7 +222,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_CXX_LIBRARY = "libstdc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -140,7 +233,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -149,14 +242,25 @@
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/usr/local/include,
+				);
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-lgsl",
+					"-lm",
+				);
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -166,7 +270,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_CXX_LIBRARY = "libstdc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -179,15 +283,26 @@
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/usr/local/include,
+				);
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				OTHER_LDFLAGS = (
+					"-lgsl",
+					"-lm",
+				);
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -225,6 +340,7 @@
 				E4F3623F183E8BD400519446 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
