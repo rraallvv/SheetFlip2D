@@ -296,7 +296,7 @@ void sheet::collapseThinSheet( char **A, sorter *sort, std::vector<particle *> &
 	FLOAT d0 = density/gn;
 	
 	// Remove Non-Thin Particles
-#if 1
+#if 1 // What?
 	OPENMP_FOR for( int n=0; n<particles.size(); n++ ) {
 		particle &p = *particles[n];
 		p.remove = 0;

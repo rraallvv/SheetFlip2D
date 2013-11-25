@@ -522,8 +522,7 @@ void drawBitmapString( const char *string, void *font=GLUT_BITMAP_HELVETICA_12) 
 }
 
 static void render() {
-#if 1 && ! TEST
-	// Paint Fluid Domain
+#if 1 && ! TEST // Paint Fluid Domain
 	FOR_EVERY_CELL(N) {
 		if( A[i][j] != AIR ) {
 			double h = 1.0/N;
@@ -555,7 +554,7 @@ static void render() {
 	} END_FOR;
 #endif
 	
-#if 1
+#if 1 // Paint What?
 	drawMarchingCube();
 #endif
 	
@@ -691,8 +690,7 @@ static void render() {
 	glPointSize(1.0);
 	glColor4d(1.0,1.0,1.0,1.0);
 	
-#if 0
-	// Velocity
+#if 0 // Velocity
 	glBegin(GL_LINES);	
 	for( int n=0; n<particles.size(); n++ ) {
 		glVertex2d(particles[n]->p[0],particles[n]->p[1]);
@@ -702,8 +700,7 @@ static void render() {
 	glEnd();
 #endif
 	
-#if 1
-	// Normal
+#if 1 // Normal
 	/*
 	glBegin(GL_LINES);	
 	for( int n=0; n<particles.size(); n++ ) {
@@ -1208,7 +1205,7 @@ static void advect_particle() {
 				particles[n]->p[k] = fmax(r,fmin(1.0-r,particles[n]->p[k]));
 			}
 		}
-#if 1
+#if 1 // What?
 		particle *p = particles[n];
 		if( p->type == FLUID ) {
 			int i = fmin(N-1,fmax(0,p->p[0]*N));

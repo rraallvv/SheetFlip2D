@@ -92,7 +92,7 @@ static FLOAT linear ( FLOAT **d, FLOAT x, FLOAT y, int w, int h ) {
 }
 
 void mapper::fetchVelocity( FLOAT p[2], FLOAT u[2], FLOAT ***grid, int gn ) {
-#if 1
+#if 1 // What?
 	u[0] = linear( grid[0], gn*p[0], gn*p[1]-0.5, gn+1, gn );
 	u[1] = linear( grid[1], gn*p[0]-0.5, gn*p[1], gn, gn+1 );
 #else
