@@ -540,8 +540,7 @@ static void render() {
 	} END_FOR;
 #endif
 	
-#if 0
-	// Paint Color
+#if 0 // Paint Color
 	FOR_EVERY_CELL(N) {
 		double h = 1.0/N;
 		double p[2] = {i*h,j*h};
@@ -560,8 +559,7 @@ static void render() {
 	drawMarchingCube();
 #endif
 	
-#if 0
-	// Paint Filled Cells
+#if 0 // Paint Filled Cells
 	FOR_EVERY_CELL(N) {
 		if( DeepArea[i][j] ) {
 			double h = 1.0/N;
@@ -577,7 +575,7 @@ static void render() {
 	} END_FOR;
 #endif
 	
-#if 0
+#if 0 // Paint What?
 	FOR_EVERY_CELL(N) {
 		if( DeepZone[i][j] ) {
 			double h = 1.0/N;
@@ -593,8 +591,7 @@ static void render() {
 	} END_FOR;
 #endif
 	
-#if 0
-	// Paint Liquid Boundary Dots
+#if 0 // Paint Liquid Boundary Dots
     glPointSize(2.0);
     glBegin(GL_POINTS);
 	glColor4d(1.0,0.0,1.0,1.0);
@@ -618,8 +615,7 @@ static void render() {
     glPointSize(1.0);
 #endif
     
-#if 0
-	// Paint Normals
+#if 0 // Paint Normals
 	glBegin(GL_LINES);	
 	for( int n=0; n<particles.size(); n++ ) {
 		if( particles[n]->type == FLUID ) {
@@ -634,8 +630,7 @@ static void render() {
 #endif
 	
 	FLOAT s = 10.0;
-#if 0
-	// Paint Velocity  Projected Inside The Walls
+#if 0 // Paint Velocity  Projected Inside The Walls
 	glColor4d(1.0,1.0,0.0,0.8);
 	FOR_EVERY_CELL(N) {
 		if( A[i][j] == WALL ) {
@@ -650,8 +645,7 @@ static void render() {
 	} END_FOR
 #endif
 	
-#if 0
-	// Draw X flow
+#if 0 // Draw X flow
 	glColor4d(0.0,0.0,1.0,1.0);
 	FOR_EVERY_X_FLOW(N) {
 		double h = 1.0/N;
@@ -675,8 +669,7 @@ static void render() {
 #endif
 	
 	// Paint Particles
-#if 0
-	// Position
+#if 0 // Position
 	glPointSize(2.0);
 	glBegin(GL_POINTS);	
 	for( int n=0; n<particles.size(); n++ ) {
@@ -1048,7 +1041,7 @@ static void compute_pressure() {
     
 	// Compute Initial Volume if Neccessary
 	if( ! volume0 ) volume0 = computeVolume(L);
-#if 0
+#if 0 // Save Data
 	FILE *fp = fopen("/Users/mscp/Desktop/volume.dat","a");
 	fprintf( fp, "%d %f\n", timeStep, computeVolume(L)/volume0 );
 	fclose(fp);
@@ -1188,7 +1181,7 @@ static void advect_particle() {
 			FLOAT p1[2];
 			FLOAT vel[2];
 			mapper::fetchVelocity( particles[n]->p, vel, u, N );
-#if 0
+#if 0 // ?
 			for( int k=0; k<2; k++ ) p1[k] = particles[n]->p[k]+DT*vel[k];	
 			int i = fmax(0,fmin(N-1,N*p1[0]));
 			int j = fmax(0,fmin(N-1,N*p1[1]));
@@ -1301,8 +1294,7 @@ static void solve_picflip() {
 	mapper::mapP2G(sort,particles,u,N);
 	sort->markWater(A,DENSITY);
 	
-#if 0
-	// Compute Surface Tension Force
+#if 0 // Compute Surface Tension Force
 	tension::add_surface_tension( sort, particles, DT, 0.0, 0.4, 0.03 );
 #endif
     

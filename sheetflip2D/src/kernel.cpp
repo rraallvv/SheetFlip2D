@@ -3,7 +3,7 @@
 
 
 FLOAT kernel::smooth_kernel( FLOAT r2, FLOAT h ) {
-#if 0
+#if 0 // ?
     r2 = r2/(h*h);
     return fmax( 1.0-r2, 0.0 );
 #else

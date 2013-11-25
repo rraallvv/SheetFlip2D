@@ -60,7 +60,7 @@ static double implicit_func( vector<particle *> &neighbors, char **DeepZone, FLO
 double implicit::implicit_func( sorter *sort, char **DeepZone, FLOAT p[2], FLOAT density ) {	
 	int gn = sort->getCellSize();	 
 	// Find Neighbors
-#if 0
+#if 0 // ?
 	return hypotf(p[0]-0.5,p[1]-0.5)-0.2;
 #else
 	vector<particle *> neighbors = sort->getNeigboringParticles_cell(fmax(0,fmin(gn-1,gn*p[0])),
