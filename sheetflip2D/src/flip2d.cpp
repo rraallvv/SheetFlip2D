@@ -690,7 +690,7 @@ static void render() {
 	glPointSize(1.0);
 	glColor4d(1.0,1.0,1.0,1.0);
 	
-#if 1 // Velocity
+#if 0 // Velocity
 	glBegin(GL_LINES);	
 	for( int n=0; n<particles.size(); n++ ) {
 		glVertex2d(particles[n]->p[0],particles[n]->p[1]);
@@ -1291,7 +1291,7 @@ static void solve_picflip() {
 	mapper::mapP2G(sort,particles,u,N);
 	sort->markWater(A,DENSITY);
 	
-#if 0 // Compute Surface Tension Force
+#if 1 // Compute Surface Tension Force
 	tension::add_surface_tension( sort, particles, DT, 0.0, 0.4, 0.03 );
 #endif
     
