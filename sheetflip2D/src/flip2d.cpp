@@ -669,7 +669,7 @@ static void render() {
 #endif
 	
 	// Paint Particles
-#if 0 // Position
+#if 1 // Position
 	glPointSize(2.0);
 	glBegin(GL_POINTS);	
 	for( int n=0; n<particles.size(); n++ ) {
@@ -691,7 +691,7 @@ static void render() {
 	glPointSize(1.0);
 	glColor4d(1.0,1.0,1.0,1.0);
 	
-#if 1
+#if 0
 	// Velocity
 	glBegin(GL_LINES);	
 	for( int n=0; n<particles.size(); n++ ) {
