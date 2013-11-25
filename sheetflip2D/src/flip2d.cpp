@@ -690,7 +690,7 @@ static void render() {
 	glPointSize(1.0);
 	glColor4d(1.0,1.0,1.0,1.0);
 	
-#if 0 // Velocity
+#if 1 // Velocity
 	glBegin(GL_LINES);	
 	for( int n=0; n<particles.size(); n++ ) {
 		glVertex2d(particles[n]->p[0],particles[n]->p[1]);
