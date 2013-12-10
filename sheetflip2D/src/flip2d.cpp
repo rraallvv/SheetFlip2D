@@ -38,8 +38,8 @@
 
 using namespace std;
 
-#define		N			32
-#define		DT			0.6e-2
+#define		N			16
+#define		DT			1.2e-2
 #define		FLIP		1
 #define     TEST        0
 #define		ALPHA		0.99
@@ -1519,7 +1519,7 @@ void flip2d::mouse( FLOAT x, FLOAT y, int state ) {
 void flip2d::motion( FLOAT x, FLOAT y, FLOAT dx, FLOAT dy ) {
 	int i = fmin(N-1,fmax(0,x*N));
 	int j = fmin(N-1,fmax(0,y*N));
-	FLOAT s = 1.0/DT;
+	FLOAT s = 0.125/DT;
 	vector<particle *> neighbors = sort->getNeigboringParticles_cell(i,j,1,1);
 	for( int n=0; n<neighbors.size(); n++ ) {
 		particle *p = neighbors[n];
