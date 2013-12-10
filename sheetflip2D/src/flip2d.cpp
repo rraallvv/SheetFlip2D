@@ -508,12 +508,16 @@ static void drawMarchingCube() {
 	FOR_EVERY_CELL(gn-1) {
 		FLOAT p[8][2];
 		int pnum;
-		glBegin(GL_TRIANGLE_FAN);
 		calcMarchingPoints( i, j, gn, SL, p, pnum );
+		FLOAT v[pnum][2];
 		for( int m=0; m<pnum; m++ ) {
-			glVertex2f(p[m][0],p[m][1]);
+			v[m][0] = p[m][0];
+			v[m][1] = p[m][1];
 		}
-		glEnd();
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glVertexPointer(2, GL_FLOAT, 0, v);
+		glDrawArrays(GL_TRIANGLE_FAN, 0, pnum);
+		glDisableClientState(GL_VERTEX_ARRAY);
 	} END_FOR;
 }
 
@@ -529,12 +533,20 @@ static void render() {
 			double pos[2] = {i*h,j*h};
 			if( A[i][j] == FLUID ) glColor4d(0.4,0.6,1.0,0.0);
 			else if( A[i][j] == WALL ) glColor4d(1.0,0.7,0.4,0.3);
-			glBegin(GL_QUADS);
-			glVertex2d(pos[0],pos[1]);
-			glVertex2d(pos[0]+h,pos[1]);
-			glVertex2d(pos[0]+h,pos[1]+h);
-			glVertex2d(pos[0],pos[1]+h);
-			glEnd();
+			FLOAT v[4][2];
+			unsigned indx[6] = { 0, 1, 3, 1, 2, 3 };
+			v[0][0] = pos[0];
+			v[0][1] = pos[1];
+			v[1][0] = pos[0]+h;
+			v[1][1] = pos[1];
+			v[2][0] = pos[0]+h;
+			v[2][1] = pos[1]+h;
+			v[3][0] = pos[0];
+			v[3][1] = pos[1]+h;
+			glEnableClientState(GL_VERTEX_ARRAY);
+			glVertexPointer(2, GL_FLOAT, 0, v);
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, indx);
+			glDisableClientState(GL_VERTEX_ARRAY);
 		}
 	} END_FOR;
 #endif
@@ -670,23 +682,35 @@ static void render() {
 	// Paint Particles
 #if 1 // Position
 	glPointSize(2.0);
-	glBegin(GL_POINTS);	
+	
+	FLOAT v[particles.size()][2];
+	FLOAT c[particles.size()][4];
+
 	for( int n=0; n<particles.size(); n++ ) {
 		FLOAT a = particles[n]->dens;
 		a = 0.8;
-		if( particles[n]->type == FLUID )
+		if( particles[n]->type == FLUID ) {
 			if( particles[n]->mark == 0 ) {
-				if( particles[n]->level > 1 ) glColor4d(0.0,1.0,0.3,a);
-				else glColor4d(0.5,0.7,1.0,a);
+				if( particles[n]->level > 1 ) { c[n][0] = 0.0; c[n][1] = 1.0; c[n][2] = 0.3; c[n][3] = a; }
+				else { c[n][0] = 0.5; c[n][1] = 0.7; c[n][2] = 1.0; c[n][3] = a; }
 			} else {
-				glColor4d(1.0,0.7,0.5,a);
+				c[n][0] = 1.0; c[n][1] = 0.7; c[n][2] = 0.5; c[n][3] = a;
 			}
-		else
-			glColor4d(0.7,0.7,0.0,1.0);
-		
-		glVertex2d(particles[n]->p[0],particles[n]->p[1]);
+		} else {
+			c[n][0] = 0.7; c[n][1] = 0.7; c[n][2] = 0.0; c[n][3] = 1.0;
+		}
+		v[n][0] = particles[n]->p[0];
+		v[n][1] = particles[n]->p[1];
 	}
-	glEnd();
+	
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_COLOR_ARRAY);
+	glVertexPointer(2, GL_FLOAT, 0, v);
+	glColorPointer(4, GL_FLOAT, 0, c);
+	glDrawArrays(GL_POINTS, 0, particles.size());
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_COLOR_ARRAY);
+
 	glPointSize(1.0);
 	glColor4d(1.0,1.0,1.0,1.0);
 	
@@ -711,17 +735,28 @@ static void render() {
 	glEnd();
 	*/
 	glColor4d(1.0,1.0,1.0,0.8);
+	FLOAT v1[N][N][2][2];
+	int num_lines = 0;
 	FOR_EVERY_CELL(N) {
 		if(A[i][j]==WALL) {
 			FLOAT h = 1.0/N;
 			FLOAT p[2] = { (FLOAT)(i*h+h/2.0),(FLOAT)(j*h+h/2.0)};
 			FLOAT v[2] = { (FLOAT)(wall_normal[0][i][j]), (FLOAT)(wall_normal[1][i][j]) };
-			glBegin(GL_LINES);
-			glVertex2d(p[0],p[1]);
-			glVertex2d(p[0]+0.5*h*v[0],p[1]+0.5*h*v[1]);
-			glEnd();
+			int line_i = num_lines/N;
+			int line_j = num_lines%N;
+			v1[line_i][line_j][0][0] = p[0];
+			v1[line_i][line_j][0][1] = p[1];
+			v1[line_i][line_j][1][0] = p[0]+0.5*h*v[0];
+			v1[line_i][line_j][1][1] = p[1]+0.5*h*v[1];
+			num_lines++;
 		}
 	} END_FOR
+	
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(2, GL_FLOAT, 0, v1);
+	glDrawArrays(GL_LINES, 0, num_lines*2);
+	glDisableClientState(GL_VERTEX_ARRAY);
+
 #endif
 	
     if( drawOval && ! SPH ) {
@@ -734,7 +769,8 @@ static void render() {
 					else glColor4d(1.0,1.0,1.0,a);
 				} else glColor4d(1.0,0.0,0.0,a);
                 FLOAT dtheta = 20;
-                glBegin(GL_LINE_LOOP);
+				FLOAT v[(int)dtheta][2];
+				
                 for( int i=0; i<dtheta; i++ ) {
                     FLOAT theta = 2*PI*i/dtheta;
                     OBB obb = particles[n]->obb;
@@ -743,9 +779,14 @@ static void render() {
 					FLOAT r = comp_rad(level,DENSITY/N);
                     FLOAT pos[] = { (FLOAT)(cos(theta)*r+particles[n]->p[0]), (FLOAT)(sin(theta)*r+particles[n]->p[1]) };
                     implicit::stretchPosition(obb,pos,particles[n]->p);
-                    glVertex2d(pos[0],pos[1]);
+					v[i][0] = pos[0];
+					v[i][1] = pos[1];
                 }
-                glEnd();
+
+				glEnableClientState(GL_VERTEX_ARRAY);
+				glVertexPointer(2, GL_FLOAT, 0, v);
+				glDrawArrays(GL_LINE_LOOP, 0, dtheta);
+				glDisableClientState(GL_VERTEX_ARRAY);
             }
         }
     }
