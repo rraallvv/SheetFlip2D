@@ -11,9 +11,6 @@
 #include <gsl/gsl_eigen.h>
 #include <gsl/gsl_linalg.h>
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
 using namespace std;
 
 OBB isotropicOBB() {
