@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		E415B3EB183EA28900219C05 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E415B3EA183EA28900219C05 /* OpenGL.framework */; };
 		E415B3ED183EA2A700219C05 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E415B3EC183EA2A700219C05 /* GLUT.framework */; };
+		E45ED78218590DFD0018A020 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45ED78118590DFD0018A020 /* Accelerate.framework */; };
 		E4F3625E183E8C5500519446 /* adaptive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4F36241183E8C5500519446 /* adaptive.cpp */; };
 		E4F3625F183E8C5500519446 /* corrector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4F36244183E8C5500519446 /* corrector.cpp */; };
 		E4F36260183E8C5500519446 /* flip2d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4F36246183E8C5500519446 /* flip2d.cpp */; };
@@ -40,6 +41,7 @@
 /* Begin PBXFileReference section */
 		E415B3EA183EA28900219C05 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		E415B3EC183EA2A700219C05 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		E45ED78118590DFD0018A020 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		E4F36234183E8BD400519446 /* sheetflip2D */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = sheetflip2D; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4F36241183E8C5500519446 /* adaptive.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = adaptive.cpp; sourceTree = "<group>"; };
 		E4F36242183E8C5500519446 /* adaptive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = adaptive.h; sourceTree = "<group>"; };
@@ -76,6 +78,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E45ED78218590DFD0018A020 /* Accelerate.framework in Frameworks */,
 				E415B3EB183EA28900219C05 /* OpenGL.framework in Frameworks */,
 				E415B3ED183EA2A700219C05 /* GLUT.framework in Frameworks */,
 			);
@@ -87,6 +90,7 @@
 		E415B3EE183EA31300219C05 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				E45ED78118590DFD0018A020 /* Accelerate.framework */,
 				E415B3EA183EA28900219C05 /* OpenGL.framework */,
 				E415B3EC183EA2A700219C05 /* GLUT.framework */,
 			);

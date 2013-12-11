@@ -3,13 +3,15 @@
  *  flip2d
  */
 
-#include "OBB.h"
-#include "utility.h"
-#include "kernel.h"
-
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_eigen.h>
 #include <gsl/gsl_linalg.h>
+
+#include <Accelerate/Accelerate.h>
+
+#include "OBB.h"
+#include "kernel.h"
+#include "utility.h"
 
 using namespace std;
 
