@@ -71,4 +71,4 @@ static FLOAT comp_rad( int level, FLOAT re ) {
 	return re*rads[level];
 }
 
-int cleanParticles( sorter *sort, std::vector<particle *> &particles );
+int cleanParticles( Sorter *sorter, std::vector<particle *> &particles );

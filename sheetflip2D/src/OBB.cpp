@@ -27,8 +27,8 @@ OBB isotropicOBB() {
 	return obb;
 }
 
-void buildOBB( char **A, char **DeepZone, sorter *sort, std::vector<particle *> &particles ) {
-	int gn = sort->getCellSize();
+void buildOBB( char **A, char **DeepZone, Sorter *sorter, std::vector<particle *> &particles ) {
+	int gn = sorter->getCellSize();
 	FLOAT min_r = 1.0/gn;
 	
 	// Build OBB
@@ -39,16 +39,16 @@ void buildOBB( char **A, char **DeepZone, sorter *sort, std::vector<particle *> 
 		int j = fmin(gn-1,fmax(0,p.p[1]*gn));
 		
 		if( A[i][j]==WALL || DeepZone[i][j] || p.level > 1 || p.dens > a7 ) p.obb = isotropicOBB();
-		else if( p.type == FLUID ) p.obb = buildNearbyOBB(sort,&p,2.0*min_r);
+		else if( p.type == FLUID ) p.obb = buildNearbyOBB(sorter,&p,2.0*min_r);
 	}
 }
 
-OBB buildNearbyOBB( sorter *sort, particle *p, FLOAT re ) {
+OBB buildNearbyOBB( Sorter *sorter, particle *p, FLOAT re ) {
 	std::vector<particle *> neighbors;
-	int cell_size = sort->getCellSize();
+	int cell_size = sorter->getCellSize();
 
 	// Gather Neighboring Particles
-	neighbors = sort->getNeigboringParticles_cell(max(0,min(cell_size-1,cell_size*p->p[0])),
+	neighbors = sorter->getNeigboringParticles_cell(max(0,min(cell_size-1,cell_size*p->p[0])),
 												  max(0,min(cell_size-1,cell_size*p->p[1])),2,2);
 	
 	std::vector<particle *> final_neighbors;

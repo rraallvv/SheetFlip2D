@@ -11,8 +11,8 @@
 #define _OBB_H
 
 OBB isotropicOBB();
-void buildOBB( char **A, char **DeepZone, sorter *sort, std::vector<particle *> &particles );
-OBB buildNearbyOBB( sorter *sort, particle *p, FLOAT re );
+void buildOBB( char **A, char **DeepZone, Sorter *sorter, std::vector<particle *> &particles );
+OBB buildNearbyOBB( Sorter *sorter, particle *p, FLOAT re );
 OBB buildOBB( std::vector<particle *> particles, FLOAT cp[2], FLOAT re );
 
 #endif

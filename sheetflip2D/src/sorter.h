@@ -8,10 +8,10 @@
 #ifndef _SORTER_H
 #define _SORTER_H
 
-class sorter {
+class Sorter {
 public:
-	sorter( int gn );
-	~sorter();
+	Sorter( int gn );
+	~Sorter();
 	
 	void sort( std::vector<particle *> &particles );
 	std::vector<particle *> getNeigboringParticles_wall( int i, int j, int w, int h );

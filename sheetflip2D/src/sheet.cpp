@@ -30,7 +30,7 @@ static void recalculate_mass( std::vector<particle *> particles ) {
 	}
 }
 
-static void compute_density_among_candidates( std::vector<particle *> &candidates, sorter *cand_sort ) {
+static void compute_density_among_candidates( std::vector<particle *> &candidates, Sorter *cand_sort ) {
 	int gn = cand_sort->getCellSize();
 	cand_sort->sort(candidates);
 	
@@ -50,7 +50,7 @@ static void compute_density_among_candidates( std::vector<particle *> &candidate
 	}
 }
 
-static particle * search( FLOAT from[2], std::vector<particle *> &candidates, FLOAT d0, sorter *cand_sort ) {
+static particle * search( FLOAT from[2], std::vector<particle *> &candidates, FLOAT d0, Sorter *cand_sort ) {
 	if( from[0] > 0.0 ) {
 		// Pop out every nearby particles
 		int gn = cand_sort->getCellSize();
@@ -114,9 +114,9 @@ static particle * search( FLOAT from[2], std::vector<particle *> &candidates, FL
 	return NULL;
 }
 
-void sheet::keepThinSheet( char **A, sorter *sort, std::vector<particle *> &particles, FLOAT obb_rate, FLOAT density, FLOAT wall_thick ) {
+void sheet::keepThinSheet( char **A, Sorter *sorter, std::vector<particle *> &particles, FLOAT obb_rate, FLOAT density, FLOAT wall_thick ) {
 	vector<particle *> new_particles;
-	int gn = sort->getCellSize();
+	int gn = sorter->getCellSize();
 	FLOAT d0 = density/gn;
 	
 	OPENMP_FOR for( int n=0; n<particles.size(); n++ ) {
@@ -138,7 +138,7 @@ void sheet::keepThinSheet( char **A, sorter *sort, std::vector<particle *> &part
         
 		if( p.type == FLUID && p.obb.ratio < obb_rate ) {
 			// Find Neighbors
-			vector<particle *> neighbors = sort->getNeigboringParticles_cell(fmax(0,fmin(gn-1,gn*p.p[0])),
+			vector<particle *> neighbors = sorter->getNeigboringParticles_cell(fmax(0,fmin(gn-1,gn*p.p[0])),
 																			 fmax(0,fmin(gn-1,gn*p.p[1])),1,1);
 				
 			// Find A Nearby Particle
@@ -169,7 +169,7 @@ void sheet::keepThinSheet( char **A, sorter *sort, std::vector<particle *> &part
 							
 							// Found Candidate. Check The Position Is Sparse Around There
 							FLOAT pos[2] = { (FLOAT)(0.5*(np.p[0]+p.p[0])), (FLOAT)(0.5*(np.p[1]+p.p[1])) };
-                            vector<particle *> neighbors_cand = sort->getNeigboringParticles_cell(fmax(0,fmin(gn-1,gn*pos[0])),
+                            vector<particle *> neighbors_cand = sorter->getNeigboringParticles_cell(fmax(0,fmin(gn-1,gn*pos[0])),
                                                                                                   fmax(0,fmin(gn-1,gn*pos[1])),1,1);
                             
 							bool sparse = true;
@@ -252,7 +252,7 @@ void sheet::keepThinSheet( char **A, sorter *sort, std::vector<particle *> &part
 	}
 	
 	// Sort Particle
-	static sorter *cand_sort = new sorter(gn);
+	static Sorter *cand_sort = new Sorter(gn);
 	cand_sort->sort( generated_particles );
 	
 	// Compute Density Among Candidates
@@ -285,14 +285,14 @@ void sheet::keepThinSheet( char **A, sorter *sort, std::vector<particle *> &part
 	}
 	
 	// Resort If Neccessary
-	if( refresh ) sort->sort(particles);
+	if( refresh ) sorter->sort(particles);
 	
 	// Recalculate Mass
 	recalculate_mass(particles);
 }
 
-void sheet::collapseThinSheet( char **A, sorter *sort, std::vector<particle *> &particles, FLOAT obb_rate, FLOAT density ) {
-	int gn = sort->getCellSize();
+void sheet::collapseThinSheet( char **A, Sorter *sorter, std::vector<particle *> &particles, FLOAT obb_rate, FLOAT density ) {
+	int gn = sorter->getCellSize();
 	FLOAT d0 = density/gn;
 	
 	// Remove Non-Thin Particles
@@ -311,7 +311,7 @@ void sheet::collapseThinSheet( char **A, sorter *sort, std::vector<particle *> &
     OPENMP_FOR for( int n=0; n<particles.size(); n++ ) {
 		particle &p = *particles[n];
         if( p.mark ) {
-            vector<particle *> neighbors = sort->getNeigboringParticles_cell(fmax(0,fmin(gn-1,gn*p.p[0])),
+            vector<particle *> neighbors = sorter->getNeigboringParticles_cell(fmax(0,fmin(gn-1,gn*p.p[0])),
                                                                              fmax(0,fmin(gn-1,gn*p.p[1])),1,1);
             bool sparse = true;
             for( int q=0; q<neighbors.size(); q++ ) {
@@ -329,7 +329,7 @@ void sheet::collapseThinSheet( char **A, sorter *sort, std::vector<particle *> &
     }
 	
 	// Remove
-	cleanParticles(sort,particles);
+	cleanParticles(sorter,particles);
 #endif
 	
 	

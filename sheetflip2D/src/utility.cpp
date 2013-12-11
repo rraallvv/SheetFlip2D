@@ -15,7 +15,7 @@ void my_rand_shuffle( std::vector<ipos> &waters ) {
 	random_shuffle( waters.begin(), waters.end() );
 }
 
-int cleanParticles( sorter *sort, std::vector<particle *> &particles ) {
+int cleanParticles( Sorter *sorter, std::vector<particle *> &particles ) {
 	int cnt = 0;
 	int size = 0;
 	for( int n=0; n<particles.size(); n++ ) {
@@ -46,6 +46,6 @@ int cleanParticles( sorter *sort, std::vector<particle *> &particles ) {
 		}
 	}
 	particles = new_particles;
-	sort->sort(particles);
+	sorter->sort(particles);
 	return cnt;
 }

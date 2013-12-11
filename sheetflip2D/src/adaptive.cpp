@@ -13,7 +13,7 @@ using namespace std;
 static const int depeth = 1;
 static char **Z = NULL;
 
-static bool split( sorter *sort, char **A, char **Z, std::vector<particle *> &particles, FLOAT density, int gn ) {
+static bool split( Sorter *sorter, char **A, char **Z, std::vector<particle *> &particles, FLOAT density, int gn ) {
 	bool didSplit = false;
 	vector<particle *> new_particles;
 	
@@ -61,16 +61,16 @@ static bool split( sorter *sort, char **A, char **Z, std::vector<particle *> &pa
 	}
 	
 	// Remove
-	cleanParticles(sort,particles);
+	cleanParticles(sorter,particles);
 	
 	// Insert New Particles
 	particles.insert( particles.end(), new_particles.begin(), new_particles.end() );
 	
-	if( new_particles.size() ) sort->sort(particles);
+	if( new_particles.size() ) sorter->sort(particles);
 	return didSplit;
 }
 
-static bool merge( sorter *sort, char **A, char **Z, std::vector<particle *> &particles, FLOAT density, int gn) {
+static bool merge( Sorter *sorter, char **A, char **Z, std::vector<particle *> &particles, FLOAT density, int gn) {
 	OPENMP_FOR for( int n=0; n<particles.size(); n++ ) {
 		particles[n]->pref = NULL;
 		particles[n]->remove = 0;
@@ -84,7 +84,7 @@ static bool merge( sorter *sort, char **A, char **Z, std::vector<particle *> &pa
 			int j = fmax(0,fmin(gn-1,gn*p.p[1]));
 			// If It Lies In Deep Zone
 			if( Z[i][j] || A[i][j] == WALL ) {
-				std::vector<particle *> neighbors = sort->getNeigboringParticles_cell(i,j,1,1);
+				std::vector<particle *> neighbors = sorter->getNeigboringParticles_cell(i,j,1,1);
 				FLOAT dist2 = 999.0;
 				for( int m=0; m<neighbors.size(); m++ ) {
 					particle &np = *neighbors[m];
@@ -132,7 +132,7 @@ static bool merge( sorter *sort, char **A, char **Z, std::vector<particle *> &pa
 	}
 	
 	// Remove
-	return cleanParticles(sort,particles);;
+	return cleanParticles(sorter,particles);;
 }
 
 // Deep Zone Will Be Marked With "1"
@@ -185,8 +185,8 @@ void adaptive::computeDeepZone( char **A, char **DeepZone, int gn ) {
 	findDeepZone( A, DeepZone, depeth+1, gn );
 }
 
-void adaptive::initial_merge( sorter *sort, char **A, std::vector<particle *> &particles, FLOAT density ) {
-	int gn = sort->getCellSize();
+void adaptive::initial_merge( Sorter *sorter, char **A, std::vector<particle *> &particles, FLOAT density ) {
+	int gn = sorter->getCellSize();
 	if( density != 0.5 ) {
 		printf( "Density must be 0.5. Exiting...\n" );
 		exit(0);
@@ -204,7 +204,7 @@ void adaptive::initial_merge( sorter *sort, char **A, std::vector<particle *> &p
 	
 	OPENMP_FOR FOR_EVERY_CELL(gn) {
 		if( Z[i][j] ) {
-			vector<particle *> cell_particles = sort->getNeigboringParticles_cell( i, j, 0, 0 );
+			vector<particle *> cell_particles = sorter->getNeigboringParticles_cell( i, j, 0, 0 );
 			if( cell_particles.size() == MAX_SPLIT ) {
 				particle &p = *cell_particles[0];
 				FLOAT pos[2] = { (FLOAT)((i+0.5)/gn), (FLOAT)((j+0.5)/gn) };
@@ -222,11 +222,11 @@ void adaptive::initial_merge( sorter *sort, char **A, std::vector<particle *> &p
 	} END_FOR;
 	
 	// Remove
-	cleanParticles(sort,particles);
+	cleanParticles(sorter,particles);
 }
 
-char** adaptive::resample( sorter *sort, char **A, std::vector<particle *> &particles, FLOAT density, bool onlysplit ) {
-	int gn = sort->getCellSize();
+char** adaptive::resample( Sorter *sorter, char **A, std::vector<particle *> &particles, FLOAT density, bool onlysplit ) {
+	int gn = sorter->getCellSize();
 	if( ! Z ) Z = alloc2D<char>(gn);
 	
 	if( ! onlysplit ) {
@@ -234,7 +234,7 @@ char** adaptive::resample( sorter *sort, char **A, std::vector<particle *> &part
 		findDeepZone( A, Z, depeth+1, gn );
 		
 		// Second Merge Particles
-		while( merge( sort, A, Z, particles, density, gn )) {};
+		while( merge( sorter, A, Z, particles, density, gn )) {};
 	}
 	
 	if( ! onlysplit ) {
@@ -247,9 +247,9 @@ char** adaptive::resample( sorter *sort, char **A, std::vector<particle *> &part
 	}
 	
 	// Third Split Particles
-	while( split( sort, A, Z, particles, density, gn )) {};
+	while( split( sorter, A, Z, particles, density, gn )) {};
 	
-	sort->markWater(A,density);
+	sorter->markWater(A,density);
 	findDeepZone( A, Z, depeth, gn );
 	
 	return Z;

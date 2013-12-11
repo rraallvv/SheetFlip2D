@@ -8,8 +8,8 @@
 #include <math.h>
 using namespace std;
 
-void tension::add_surface_tension( sorter *sort, vector<particle *> &particles, FLOAT dt, FLOAT min_dens, FLOAT max_dens, FLOAT tension ) {	
-	int gn = sort->getCellSize();
+void tension::add_surface_tension( Sorter *sorter, vector<particle *> &particles, FLOAT dt, FLOAT min_dens, FLOAT max_dens, FLOAT tension ) {
+	int gn = sorter->getCellSize();
 	static FLOAT **color = NULL;
 	static FLOAT **color_div = NULL;
 	static FLOAT ***color_grad = NULL;
@@ -27,7 +27,7 @@ void tension::add_surface_tension( sorter *sort, vector<particle *> &particles, 
 	// First Compute Color On Grid
 	OPENMP_FOR FOR_EVERY_CELL(gn) {
 		FLOAT p[2] = { (FLOAT)((i+0.5)*h), (FLOAT)((j+0.5)*h) };
-		vector<particle *> neighbors = sort->getNeigboringParticles_cell(i,j,1,1);
+		vector<particle *> neighbors = sorter->getNeigboringParticles_cell(i,j,1,1);
 		FLOAT wsum = 0.0;
 		for( int m=0; m<neighbors.size(); m++ ) {
 			particle np = *neighbors[m];
@@ -76,7 +76,7 @@ void tension::add_surface_tension( sorter *sort, vector<particle *> &particles, 
 	OPENMP_FOR for( int n=0; n<particles.size(); n++ ) {
 		particle &p = *particles[n];
 		
-		vector<particle *> neighbors = sort->getNeigboringParticles_cell(fmax(0,fmin(gn-1,gn*p.p[0])),
+		vector<particle *> neighbors = sorter->getNeigboringParticles_cell(fmax(0,fmin(gn-1,gn*p.p[0])),
 																		 fmax(0,fmin(gn-1,gn*p.p[1])),1,1);
 		int nump = 0;
 		for( int i=0; i<neighbors.size(); i++ ) nump += neighbors[i]->type == FLUID;

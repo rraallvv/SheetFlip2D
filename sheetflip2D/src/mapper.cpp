@@ -14,7 +14,7 @@ using namespace std;
 #define RE			1.4
 #define FOR_EVERY_PARTICLE for( int n=0; n<particles.size(); n++ ) { particle *p = particles[n];
 
-void mapper::mapP2G( sorter *sort, vector<particle *> &particles, FLOAT ***grid, int gn ) {
+void mapper::mapP2G( Sorter *sorter, vector<particle *> &particles, FLOAT ***grid, int gn ) {
 	
 	// Compute Mapping
 	OPENMP_FOR FOR_EVERY_CELL(gn+1) {
@@ -27,7 +27,7 @@ void mapper::mapP2G( sorter *sort, vector<particle *> &particles, FLOAT ***grid,
 			FLOAT px[2] = { (FLOAT)i, (FLOAT)(j+0.5) };
 			FLOAT sumw = 0.0;
 			FLOAT sumx = 0.0;
-			neighbors = sort->getNeigboringParticles_wall(i,j,1,2);
+			neighbors = sorter->getNeigboringParticles_wall(i,j,1,2);
 			for( int n=0; n<neighbors.size(); n++ ) {
 				particle *p = neighbors[n];
 				if( p->type == FLUID ) {
@@ -46,7 +46,7 @@ void mapper::mapP2G( sorter *sort, vector<particle *> &particles, FLOAT ***grid,
 			FLOAT py[2] = { (FLOAT)(i+0.5), (FLOAT)j };
 			FLOAT sumw = 0.0;
 			FLOAT sumy = 0.0;
-			neighbors = sort->getNeigboringParticles_wall(i,j,2,1);
+			neighbors = sorter->getNeigboringParticles_wall(i,j,2,1);
 			for( int n=0; n<neighbors.size(); n++ ) {
 				particle *p = neighbors[n];
 				if( p->type == FLUID ) {

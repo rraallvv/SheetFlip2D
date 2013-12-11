@@ -13,16 +13,16 @@ using namespace std;
 
 #define SPRING		50
 
-void corrector::resample( sorter *sort, FLOAT p[2], FLOAT u[2], FLOAT re ) {
+void corrector::resample( Sorter *sorter, FLOAT p[2], FLOAT u[2], FLOAT re ) {
 	// Variables for Neighboring Particles
 	std::vector<particle *> neighbors;
-	int cell_size = sort->getCellSize();
+	int cell_size = sorter->getCellSize();
 	FLOAT wsum = 0.0;
 	FLOAT save[2] = { u[0], u[1] };
 	u[0] = u[1] = 0.0;
 	
 	// Gather Neighboring Particles
-	neighbors = sort->getNeigboringParticles_cell(max(0,min(cell_size-1,cell_size*p[0])),
+	neighbors = sorter->getNeigboringParticles_cell(max(0,min(cell_size-1,cell_size*p[0])),
 												  max(0,min(cell_size-1,cell_size*p[1])),1,1);
 	for( int n=0; n<neighbors.size(); n++ ) {
 		particle *np = neighbors[n];
@@ -43,10 +43,10 @@ void corrector::resample( sorter *sort, FLOAT p[2], FLOAT u[2], FLOAT re ) {
 	}
 }
 
-void corrector::correct( sorter *sort, std::vector<particle *> &particles, FLOAT dt, FLOAT re, bool anisotropic ) {
+void corrector::correct( Sorter *sorter, std::vector<particle *> &particles, FLOAT dt, FLOAT re, bool anisotropic ) {
 	// Variables for Neighboring Particles
-	sort->sort(particles);
-	int cell_size = sort->getCellSize();
+	sorter->sort(particles);
+	int cell_size = sorter->getCellSize();
 	
 	// Compute Pseudo Moved Point
 	OPENMP_FOR for( int n=0; n<particles.size(); n++ ) {		
@@ -55,7 +55,7 @@ void corrector::correct( sorter *sort, std::vector<particle *> &particles, FLOAT
 			FLOAT spring[2] = { 0.0, 0.0 };
 			FLOAT x = max(0,min(cell_size,cell_size*p->p[0]));
 			FLOAT y = max(0,min(cell_size,cell_size*p->p[1]));
-			std::vector<particle *> neighbors = sort->getNeigboringParticles_cell(x,y,1,1);
+			std::vector<particle *> neighbors = sorter->getNeigboringParticles_cell(x,y,1,1);
 			for( int n=0; n<neighbors.size(); n++ ) {
 				particle *np = neighbors[n];
 				if( p != np ) {
@@ -97,7 +97,7 @@ void corrector::correct( sorter *sort, std::vector<particle *> &particles, FLOAT
 			particle *p = particles[n];
 			p->tmp[1][0] = p->u[0];
 			p->tmp[1][1] = p->u[1];
-			resample( sort, p->tmp[0], p->tmp[1], a1*comp_rad(p->level,re) );
+			resample( sorter, p->tmp[0], p->tmp[1], a1*comp_rad(p->level,re) );
 		}
 	}
 	

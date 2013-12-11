@@ -60,7 +60,7 @@ static FLOAT **SL = NULL;		// Equivalent to SL[N][N] (Surface Levelset)
 static Vector2 ***F = NULL;     // Access Bracket u[DIM][X][Y][DIM] ( Staggered Grid )
 static char **A = NULL;
 static FLOAT ***wall_normal = NULL;
-static sorter *sort = NULL;
+static Sorter *sorter = NULL;
 static FLOAT max_dens = 0.0;
 static FLOAT volume0 = 0.0;
 static FLOAT y_volume0 = 0.0;
@@ -110,7 +110,7 @@ static double dumptime() {
 
 static void compute_wall_normal() {
 	// Sort Particles
-	sort->sort(particles);
+	sorter->sort(particles);
 	
 	// Compute Wall Normal
 	for( int n=0; n<particles.size(); n++ ) {
@@ -133,7 +133,7 @@ static void compute_wall_normal() {
 			} 
 			
 			if( p->n[0] == 0.0 && p->n[1] == 0.0 ) {
-				vector<particle *> neighbors = sort->getNeigboringParticles_cell(i,j,1,1);
+				vector<particle *> neighbors = sorter->getNeigboringParticles_cell(i,j,1,1);
 				for( int n=0; n<neighbors.size(); n++ ) {
 					particle *np = neighbors[n];
 					if( p!=np && np->type == WALL ) {
@@ -163,7 +163,7 @@ static void compute_wall_normal() {
 	
 	FOR_EVERY_CELL(N) {
 		if( A[i][j] == WALL ) {
-			vector<particle *> array = sort->getNeigboringParticles_cell(i,j,0,0);
+			vector<particle *> array = sorter->getNeigboringParticles_cell(i,j,0,0);
 			for( int m=0; m<array.size(); m++ ) {
 				if( array[m]->type == WALL ) {
 					wall_normal[0][i][j] = array[m]->n[0];
@@ -180,7 +180,7 @@ static void compute_wall_normal() {
 			if( p->type == WALL && p->n[0] == 0.0 && p->n[1] == 0.0 ) {
 				int i = fmin(N-1,fmax(0,p->p[0]*N));
 				int j = fmin(N-1,fmax(0,p->p[1]*N));
-				vector<particle *> neighbors = sort->getNeigboringParticles_cell(i,j,1,1);
+				vector<particle *> neighbors = sorter->getNeigboringParticles_cell(i,j,1,1);
 				p->tmp[0][0] = 0.0;
 				p->tmp[0][1] = 0.0;
 				for( int n=0; n<neighbors.size(); n++ ) {
@@ -209,14 +209,14 @@ static void compute_wall_normal() {
 		}
 	}
 	
-	sort->sort(particles);
-	sort->markWater(A,DENSITY);
+	sorter->sort(particles);
+	sorter->markWater(A,DENSITY);
 }
 
 static void computeDensity() {
 	OPENMP_FOR for( int n=0; n<particles.size(); n++ ) {
 		// Find Neighbors
-		int gn = sort->getCellSize();
+		int gn = sorter->getCellSize();
 		if( particles[n]->type == WALL ) {
 			particles[n]->dens = 1.0;
 			continue;
@@ -224,7 +224,7 @@ static void computeDensity() {
 		
 		FLOAT *p = particles[n]->p;
 		
-		vector<particle *> neighbors = sort->getNeigboringParticles_cell(fmax(0,fmin(gn-1,gn*p[0])),
+		vector<particle *> neighbors = sorter->getNeigboringParticles_cell(fmax(0,fmin(gn-1,gn*p[0])),
 																		 fmax(0,fmin(gn-1,gn*p[1])),1,1);
 		FLOAT wsum = 0.0;
 		for( int m=0; m<neighbors.size(); m++ ) {
@@ -341,7 +341,7 @@ void flip2d::init() {
 	particles.clear();
 	
 	// Allocate Sorter
-	if( ! sort ) sort = new sorter(N);
+	if( ! sorter ) sorter = new Sorter(N);
 	
 	// This Is A Test Part. We Generate Pseudo Particles To Measure Maximum Particle Density
 	FLOAT h = DENSITY/N;
@@ -353,7 +353,7 @@ void flip2d::init() {
 		p->m = 1.0;
 		particles.push_back(p);
 	} END_FOR
-	sort->sort(particles);
+	sorter->sort(particles);
 
 	max_dens = 1.0;
 	computeDensity();
@@ -418,8 +418,8 @@ void flip2d::init() {
 #endif
     
 	// Remove Particles That Stuck On Wal Cells
-	sort->sort(particles);
-	sort->markWater(A,DENSITY);
+	sorter->sort(particles);
+	sorter->markWater(A,DENSITY);
 	
 	for( vector<particle *>::iterator iter=particles.begin(); iter!=particles.end(); ) {
 		particle &p = **iter;
@@ -441,7 +441,7 @@ void flip2d::init() {
 	compute_wall_normal();
 	
 	// Initial Merge
-	if( adaptive_sampling ) adaptive::initial_merge( sort, A, particles, DENSITY );
+	if( adaptive_sampling ) adaptive::initial_merge( sorter, A, particles, DENSITY );
 	
 	// Turn On Blending
 	glEnable(GL_BLEND);
@@ -1074,7 +1074,7 @@ static void compute_pressure() {
 	
 	// Calculate LevelSet
 	FOR_EVERY_CELL(N) {
-		L[i][j] = sort->levelset(i,j,DENSITY);
+		L[i][j] = sorter->levelset(i,j,DENSITY);
 	} END_FOR;
     
 	// Compute Initial Volume if Neccessary
@@ -1236,7 +1236,7 @@ static void advect_particle() {
 	}
 	
 	// Sort
-	sort->sort(particles);
+	sorter->sort(particles);
 	
 	// Constraint Outer Wall
 	OPENMP_FOR for( int n=0; n<particles.size(); n++ ) {
@@ -1252,7 +1252,7 @@ static void advect_particle() {
 			int i = fmin(N-1,fmax(0,p->p[0]*N));
 			int j = fmin(N-1,fmax(0,p->p[1]*N));
             
-			vector<particle *> neighbors = sort->getNeigboringParticles_cell(i,j,1,1);
+			vector<particle *> neighbors = sorter->getNeigboringParticles_cell(i,j,1,1);
 			for( int n=0; n<neighbors.size(); n++ ) {
 				particle *np = neighbors[n];
 				double re = 0.5/N + 0.5*comp_rad(np->level,DENSITY/N);
@@ -1328,12 +1328,12 @@ static void rungekutta4_streamflow( FLOAT p[2], FLOAT out[2], FLOAT dt=DT, int i
 static void solve_picflip() {
     
     // Map Particles Onto Grid
-	sort->sort(particles);
-	mapper::mapP2G(sort,particles,u,N);
-	sort->markWater(A,DENSITY);
+	sorter->sort(particles);
+	mapper::mapP2G(sorter,particles,u,N);
+	sorter->markWater(A,DENSITY);
 	
 #if 1 // Compute Surface Tension Force
-	tension::add_surface_tension( sort, particles, DT, 0.0, 0.4, 0.03 );
+	tension::add_surface_tension( sorter, particles, DT, 0.0, 0.4, 0.03 );
 #endif
     
     // Solve Velocity On Grid
@@ -1385,23 +1385,23 @@ static void simulate() {
 	pourWater(-1);
     
 	// Sort Particles
-	sort->sort(particles);
+	sorter->sort(particles);
 	
 	// Mark Cell
-	sort->markWater(A,DENSITY);
+	sorter->markWater(A,DENSITY);
 	
 	// Adaptive Resampling
-	DeepZone = adaptive::resample( sort, A, particles, DENSITY, !adaptive_sampling );
+	DeepZone = adaptive::resample( sorter, A, particles, DENSITY, !adaptive_sampling );
 	
 	// Compute Average Position And Density
 	computeDensity();
 	
 	// Insert Thin Particles
 	if( splitting ) {
-		sheet::keepThinSheet(A,sort,particles,OBB_RATE,DENSITY,WALL_THICK);
+		sheet::keepThinSheet(A,sorter,particles,OBB_RATE,DENSITY,WALL_THICK);
 	}
-	sheet::collapseThinSheet(A,sort,particles,OBB_RATE,DENSITY);
-	buildOBB(A,DeepZone,sort,particles);
+	sheet::collapseThinSheet(A,sorter,particles,OBB_RATE,DENSITY);
+	buildOBB(A,DeepZone,sorter,particles);
     
 #if TEST
     const int turn_cnt = 3000;
@@ -1431,7 +1431,7 @@ static void simulate() {
 			if( DeepZone[i][j] ) {
 				DeepArea[i][j] = 1;
 			} else {
-				vector<particle *> cell_particles = sort->getNeigboringParticles_cell(i,j,1,1);
+				vector<particle *> cell_particles = sorter->getNeigboringParticles_cell(i,j,1,1);
 				int counts[2] = { 0, 0 };
 				for( int n=0; n<cell_particles.size(); n++ ) {
 					if( cell_particles[n]->level > 1 ) counts[1] ++;
@@ -1457,7 +1457,7 @@ static void simulate() {
 	advect_particle();
 	
 	// Correct Position
-	if( correction ) corrector::correct(sort,particles,DT,DENSITY/N,anisotropic_spring);
+	if( correction ) corrector::correct(sorter,particles,DT,DENSITY/N,anisotropic_spring);
 #endif
 	
 	// Record Time
@@ -1466,7 +1466,7 @@ static void simulate() {
 	// Generate Surface LevelSet
 	FOR_EVERY_CELL(N) {
 		FLOAT p[] = { (FLOAT)((i+0.5)/N), (FLOAT)((j+0.5)/N) };
-		SL[i][j] = implicit::implicit_func(sort,DeepArea,p,DENSITY);
+		SL[i][j] = implicit::implicit_func(sorter,DeepArea,p,DENSITY);
 		if( A[i][j] == WALL ) SL[i][j] = 1.0;
 	} END_FOR;
 }
@@ -1479,8 +1479,8 @@ void flip2d::display() {
 	}
 	
 #if SPH
-	sort->sort(particles);
-	sort->markWater(A,DENSITY);
+	sorter->sort(particles);
+	sorter->markWater(A,DENSITY);
 	add_ExtForce();
 	
 	static char **tmpDeep = alloc2D<char>(N);
@@ -1489,18 +1489,18 @@ void flip2d::display() {
 		DeepZone[i][j] = 0;
 	} END_FOR;
 	
-	SPH2D::solve_SPH(sort, particles, DENSITY/N, DT, doInit || timeStep==0 );
+	SPH2D::solve_SPH(sorter, particles, DENSITY/N, DT, doInit || timeStep==0 );
 	
-	sort->sort(particles);
-	sort->markWater(A,DENSITY);
+	sorter->sort(particles);
+	sorter->markWater(A,DENSITY);
 	
 	// Insert Thin Particles
 	if( splitting ) {
 		computeDensity();
-		sheet::keepThinSheet(A,sort,particles,OBB_RATE,DENSITY,WALL_THICK);
+		sheet::keepThinSheet(A,sorter,particles,OBB_RATE,DENSITY,WALL_THICK);
 	}
-	sheet::collapseThinSheet(A,sort,particles,OBB_RATE,DENSITY);
-	buildOBB(A,DeepZone,sort,particles);
+	sheet::collapseThinSheet(A,sorter,particles,OBB_RATE,DENSITY);
+	buildOBB(A,DeepZone,sorter,particles);
 #else
 	simulate();
 #endif
@@ -1561,7 +1561,7 @@ void flip2d::motion( FLOAT x, FLOAT y, FLOAT dx, FLOAT dy ) {
 	int i = fmin(N-1,fmax(0,x*N));
 	int j = fmin(N-1,fmax(0,y*N));
 	FLOAT s = 0.125/DT;
-	vector<particle *> neighbors = sort->getNeigboringParticles_cell(i,j,1,1);
+	vector<particle *> neighbors = sorter->getNeigboringParticles_cell(i,j,1,1);
 	for( int n=0; n<neighbors.size(); n++ ) {
 		particle *p = neighbors[n];
 		if( hypotf(x-p->p[0],y-p->p[1]) < 0.5 ) {

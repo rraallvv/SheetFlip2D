@@ -8,6 +8,6 @@
 #include <vector>
 
 namespace corrector {
-	void resample( sorter *sort, FLOAT p[2], FLOAT u[2], FLOAT re );
-	void correct( sorter *sort, std::vector<particle *> &particle, FLOAT dt, FLOAT re, bool anisotropic=false );
+	void resample( Sorter *sorter, FLOAT p[2], FLOAT u[2], FLOAT re );
+	void correct( Sorter *sorter, std::vector<particle *> &particle, FLOAT dt, FLOAT re, bool anisotropic=false );
 };

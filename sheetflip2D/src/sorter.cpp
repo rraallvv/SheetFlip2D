@@ -12,15 +12,15 @@
 
 using namespace std;
 
-sorter::sorter( int gn ) {
+Sorter::Sorter( int gn ) {
 	cells = alloc2D<vector<particle *> >(gn);
 	this->gn = gn;
 }
 
-sorter::~sorter() {
+Sorter::~Sorter() {
 }
 
-void sorter::sort( std::vector<particle *> &particles ) {
+void Sorter::sort( std::vector<particle *> &particles ) {
 	// Clear All Cells
 	FOR_EVERY_CELL(gn) {
 		cells[i][j].clear();
@@ -39,7 +39,7 @@ void sorter::sort( std::vector<particle *> &particles ) {
 	}
 }
 
-std::vector<particle *> sorter::getNeigboringParticles_wall( int i, int j, int w, int h ) {
+std::vector<particle *> Sorter::getNeigboringParticles_wall( int i, int j, int w, int h ) {
 	std::vector<particle *> res;
 	int sum = 0;
 	for( int si=i-w; si<=i+w-1; si++ ) for( int sj=j-h; sj<=j+h-1; sj++ ) {
@@ -59,7 +59,7 @@ std::vector<particle *> sorter::getNeigboringParticles_wall( int i, int j, int w
 	return res;
 }
 
-std::vector<particle *> sorter::getNeigboringParticles_cell( int i, int j, int w, int h ) {
+std::vector<particle *> Sorter::getNeigboringParticles_cell( int i, int j, int w, int h ) {
 	std::vector<particle *> res;
 	int sum = 0;
 	for( int si=i-w; si<=i+w; si++ ) for( int sj=j-h; sj<=j+h; sj++ ) {
@@ -79,7 +79,7 @@ std::vector<particle *> sorter::getNeigboringParticles_cell( int i, int j, int w
 	return res;
 }
 
-FLOAT sorter::levelset( int i, int j, FLOAT density ) {
+FLOAT Sorter::levelset( int i, int j, FLOAT density ) {
 	FLOAT accm = 0.0;
 	for( int k=0; k<cells[i][j].size(); k++ ) { 
 		if( cells[i][j][k]->type == FLUID ) {
@@ -92,7 +92,7 @@ FLOAT sorter::levelset( int i, int j, FLOAT density ) {
 	return 0.2*n0-accm;
 }
 
-void sorter::markWater( char **A, FLOAT density ) {
+void Sorter::markWater( char **A, FLOAT density ) {
 	FOR_EVERY_CELL(gn) {
 		bool Wall = false;
 		for( int k=0; k<cells[i][j].size(); k++ ) { 
