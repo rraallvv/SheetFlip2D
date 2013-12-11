@@ -107,15 +107,21 @@ OBB buildOBB( vector<particle *> particles, FLOAT cp[2], FLOAT re ) {
 	gsl_vector *w = gsl_vector_alloc(2);
 	gsl_matrix *v = gsl_matrix_alloc(2,2);
 	gsl_linalg_SV_decomp(M, v, r, w);
-	gsl_eigen_symmv_sort( r, v, GSL_EIGEN_SORT_VAL_DESC );
 		
 	// Extract Eigen Vectors
 	OBB obb;
-	obb.u[0][0] = gsl_matrix_get( v, 0, 0 );
-	obb.u[0][1] = gsl_matrix_get( v, 1, 0 );
-	obb.u[1][0] = gsl_matrix_get( v, 0, 1 );
-	obb.u[1][1] = gsl_matrix_get( v, 1, 1 );
-	
+	if (gsl_vector_get(r,0) > gsl_vector_get(r,1)) {
+		obb.u[0][0] = gsl_matrix_get(v, 0, 0);
+		obb.u[0][1] = gsl_matrix_get(v, 0, 1);
+		obb.u[1][0] = gsl_matrix_get(v, 1, 0);
+		obb.u[1][1] = gsl_matrix_get(v, 1, 1);
+	} else {
+		obb.u[0][0] = gsl_matrix_get(v, 1, 0);
+		obb.u[0][1] = gsl_matrix_get(v, 1, 1);
+		obb.u[1][0] = gsl_matrix_get(v, 0, 0);
+		obb.u[1][1] = gsl_matrix_get(v, 0, 1);
+	}
+
 	// Put Eigen Value
 	for( int i=0; i<2; i++ ) {
 		obb.c[i] = gsl_vector_get( r, i ) / (0.1*re*re);
