@@ -3,10 +3,6 @@
  *  flip2d
  */
 
-#include <gsl/gsl_matrix.h>
-#include <gsl/gsl_eigen.h>
-#include <gsl/gsl_linalg.h>
-
 #include <Accelerate/Accelerate.h>
 
 #include "OBB.h"
@@ -61,9 +57,61 @@ OBB buildNearbyOBB( Sorter *sorter, particle *p, FLOAT re ) {
 	return buildOBB(final_neighbors,p->p,re);
 }
 
+void SingularValueDecomposition(FLOAT mIn[2][2], FLOAT vOut[2], FLOAT mOut[2][2]) // pointer to top-left corner
+{
+	double A[2][2];
+	double U[2][2];
+	double V[2][2];
+    double S[2];
+	
+	for (int j=0; j<2; j++) {
+		for (int i=0; i<2; i++) {
+			A[j][i] = mIn[i][j];
+		}
+	}
+	
+    char JOBU='A';
+    char JOBVT='A';
+    int LWORK=-1;
+    double test;
+    int INFO;
+	
+	int N = 2;
+	
+    // Allocate memory
+    dgesvd_(&JOBU, &JOBVT, &N, &N,
+			(double*)A, &N,
+			(double*)S,
+			(double*)U, &N,
+			(double*)V, &N,
+			&test, &LWORK, &INFO);
+    LWORK=test;
+    int size=int(test);
+    double WORK[size];
+	
+    // Compute SVD
+    dgesvd_(&JOBU, &JOBVT, &N, &N,
+			(double*)A, &N,
+			(double*)S,
+			(double*)U, &N,
+			(double*)V, &N,
+			&WORK[0], &LWORK, &INFO);
+	
+    // Output as doubles
+	for (int i=0; i<2; i++) {
+		vOut[i] = S[i];
+	}
+	
+	for (int j=0; j<2; j++) {
+		for (int i=0; i<2; i++) {
+			mOut[i][j] = V[i][j];
+		}
+	}
+}
+
 OBB buildOBB( vector<particle *> particles, FLOAT cp[2], FLOAT re ) {
 	
-    int pn = particles.size();
+    int pn = (int)particles.size();
     
 	// Compute Center Position
     FLOAT c[2] = { 0.0, 0.0 };
@@ -80,9 +128,6 @@ OBB buildOBB( vector<particle *> particles, FLOAT cp[2], FLOAT re ) {
         c[1] /= wsum;
     }
     
-	// Allocate 2x2 Matrix
-	gsl_matrix *M = gsl_matrix_alloc(2,2);
-	
 	// Compute Variance-covariance Matrix
 	FLOAT A[2][2] = { {0.0, 0.0}, {0.0, 0.0}};
 	FOR_EVERY_CELL(2) {
@@ -96,45 +141,26 @@ OBB buildOBB( vector<particle *> particles, FLOAT cp[2], FLOAT re ) {
         if( wsum ) A[i][j] /= wsum;
 	} END_FOR;
 	
-	// Fill In
-	FOR_EVERY_CELL(2) {
-		gsl_matrix_set(M, i, j, A[i][j] );
-	} END_FOR;
-	
 	// Compute Eigen Vectors
-	gsl_vector *r = gsl_vector_alloc(2);
-	gsl_vector *w = gsl_vector_alloc(2);
-	gsl_matrix *v = gsl_matrix_alloc(2,2);
-	gsl_linalg_SV_decomp(M, v, r, w);
-		
+	FLOAT r[2];
+	FLOAT v[2][2];
+	
+	SingularValueDecomposition(A, r, v);
+	
 	// Extract Eigen Vectors
 	OBB obb;
-	if (gsl_vector_get(r,0) > gsl_vector_get(r,1)) {
-		obb.u[0][0] = gsl_matrix_get(v, 0, 0);
-		obb.u[0][1] = gsl_matrix_get(v, 0, 1);
-		obb.u[1][0] = gsl_matrix_get(v, 1, 0);
-		obb.u[1][1] = gsl_matrix_get(v, 1, 1);
-	} else {
-		obb.u[0][0] = gsl_matrix_get(v, 1, 0);
-		obb.u[0][1] = gsl_matrix_get(v, 1, 1);
-		obb.u[1][0] = gsl_matrix_get(v, 0, 0);
-		obb.u[1][1] = gsl_matrix_get(v, 0, 1);
-	}
-
+	obb.u[0][0] = v[0][0];
+	obb.u[0][1] = v[1][0];
+	obb.u[1][0] = v[0][1];
+	obb.u[1][1] = v[1][1];
+	
 	// Put Eigen Value
 	for( int i=0; i<2; i++ ) {
-		obb.c[i] = gsl_vector_get( r, i ) / (0.1*re*re);
+		obb.c[i] = r[i] / (0.1*re*re);
 	}
     
-	FLOAT a = gsl_vector_get( r, 0 );
-	obb.ratio = a ? obb.ratio = gsl_vector_get( r, 1 ) / a : 0.0;
-	
-	// Deallocation
-	gsl_matrix_free(M);
-	gsl_matrix_free(v);
-	gsl_vector_free(r);
-	gsl_vector_free(w);
-	// gsl_eigen_symmv_free(w);
+	FLOAT a = r[0];
+	obb.ratio = a ? obb.ratio = r[1] / a : 0.0;
 	
 	return obb;
 }
