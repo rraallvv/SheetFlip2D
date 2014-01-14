@@ -852,7 +852,11 @@ static void render() {
 	} else {
 		glRasterPos2d(0.05,0.93);
 		char timeStr[64];
-		sprintf( timeStr, "Time: %.2f msec", 1000.0*compTime );
+		static float fps = 0;
+		float frame = 1.0f/compTime;
+		if (!isinf(frame))
+			fps = 0.1f*frame + 0.9f*fps;
+		sprintf( timeStr, "FPS: %.2f", fps );
 		drawBitmapString(timeStr,GLUT_BITMAP_HELVETICA_18);
 	}
 }
