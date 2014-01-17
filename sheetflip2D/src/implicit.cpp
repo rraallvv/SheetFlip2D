@@ -16,7 +16,7 @@ void implicit::stretchPosition( OBB& obb, FLOAT p[2], FLOAT center[2], FLOAT min
 	FLOAT rp[2] = { p[0]-center[0], p[1]-center[1] };
 	
 	// Compute Dot Product
-	FLOAT dot[3];
+	FLOAT dot[2];
 	for( int k=0; k<2; k++ ) {
 		dot[k] = rp[0]*obb.u[0][k] + rp[1]*obb.u[1][k];
 	}
