@@ -38,7 +38,7 @@
 
 using namespace std;
 
-#define		N			16
+#define		N			25
 #define		DT			1.2e-2
 #define		FLIP		1
 #define     TEST        0
@@ -64,7 +64,6 @@ static Sorter *sorter = NULL;
 static FLOAT max_dens = 0.0;
 static FLOAT volume0 = 0.0;
 static FLOAT y_volume0 = 0.0;
-static double compTime = 0.0;
 
 static bool place_sphere = 1;
 static FLOAT sphere_r = 0.3;
@@ -79,7 +78,7 @@ static int init_num = 0;
 static int correction = 1;
 static int splitting = 0;
 static int subcell = 1;
-static int drawOval = 0;
+static int drawOval = 1;
 static int anisotropic_spring = 1;
 static int adaptive_sampling = 1;
 static int correct_volume = 1;
@@ -853,7 +852,7 @@ static void render() {
 		glRasterPos2d(0.05,0.93);
 		char timeStr[64];
 		static float fps = 0;
-		float frame = 1.0f/compTime;
+		float frame = 1.0f/dumptime();
 		if (!isinf(frame))
 			fps = 0.1f*frame + 0.9f*fps;
 		sprintf( timeStr, "FPS: %.2f", fps );
@@ -1463,10 +1462,7 @@ static void simulate() {
 	// Correct Position
 	if( correction ) corrector::correct(sorter,particles,DT,DENSITY/N,anisotropic_spring);
 #endif
-	
-	// Record Time
-	compTime = dumptime();
-	
+		
 	// Generate Surface LevelSet
 	FOR_EVERY_CELL(N) {
 		FLOAT p[] = { (FLOAT)((i+0.5)/N), (FLOAT)((j+0.5)/N) };
